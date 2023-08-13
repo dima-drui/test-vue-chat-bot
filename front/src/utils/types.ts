@@ -11,10 +11,10 @@ export interface Message {
     text: string,
     key: string,
     time: string,
-    action?: MsgAction
+    actions?: MsgAction[]
 }
 
-export type MessageDraft = Pick<Message, 'sender' | 'text' | 'action'> 
+export type MessageDraft = Pick<Message, 'sender' | 'text' | 'actions'> 
 
 export interface MsgAction {
     method: any,
@@ -29,4 +29,7 @@ export interface BotSettings {
 export interface BotAnswers {
     welcome(): MessageDraft
     giveWeather(): MessageDraft
+    givePizza(): MessageDraft
+    alarmIsSet(s: number): MessageDraft
+    alarmRinging(): MessageDraft
 }

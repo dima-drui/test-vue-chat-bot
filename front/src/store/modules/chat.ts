@@ -40,7 +40,17 @@ const useAppStore = defineStore('chat', {
 // CHAT ACTIONS
     showWeather(){
         this.pushMessage(botAnswers.giveWeather())
-    }
+    },
+    orderPizza(){
+        this.pushMessage(botAnswers.givePizza())
+    },
+    setAlarm(s: number){
+        this.pushMessage(botAnswers.alarmIsSet(s))
+
+        setTimeout(()=>{
+            this.pushMessage(botAnswers.alarmRinging())
+        }, s)
+    },
 
   }
 })

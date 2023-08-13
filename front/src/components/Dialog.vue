@@ -16,11 +16,16 @@
                 <p><i style="font-size: xx-small;">{{ msg.time }}</i></p>
 
                 <v-sheet
-                    v-if="msg.action"
+                    v-if="msg.actions && msg.actions.length > 0"
                     >
                     <v-btn 
-                        :text="msg.action.label"
-                        @click="msg.action.method()"
+                        v-for="action in msg.actions"
+                        :text="action.label"
+                        size="small"
+                        density="compact"
+                        variant="tonal"
+                        class="ma-1"
+                        @click="action.method()"
                         ></v-btn>
                 </v-sheet>
 
