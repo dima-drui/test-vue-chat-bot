@@ -5,7 +5,8 @@
         <v-sheet
             rounded
             elevation="2"
-            class="pa-2 d-flex flex-column"
+            color="deep-purple-accent-1"
+            class="pa-2 d-flex flex-column "
             height="600px"
             max-width="500px"
             position="fixed"

@@ -1,16 +1,17 @@
 <template>
-    <v-list class="d-flex flex-column">
-        <v-list-subheader
-            :title="botSettings?.name + ' на связи'"
-            >
-        </v-list-subheader>
+    <p><i>{{ botSettings?.name + ' на связи' }}</i></p>
+    <v-list 
+        class="d-flex flex-column"
+        height="500px"
+        >
+
         <v-list-item
             v-for="msg in messages"
             :key="msg.key"
+            rounded
             :prepend-icon="msg.sender == msgSender.bot ? botSettings?.avatar : ''" 
             :class="msg.sender == msgSender.bot ? 'message message__bot' : 'message message__user' "
-            rounded
-            elevation="1"
+            variant="tonal"
             >
                 <p><b>{{ msg.text }}</b></p>
                 <p><i style="font-size: xx-small;">{{ msg.time }}</i></p>
@@ -24,6 +25,7 @@
                         size="small"
                         density="compact"
                         variant="tonal"
+                        color="purple"
                         class="ma-1"
                         @click="action.method()"
                         ></v-btn>
