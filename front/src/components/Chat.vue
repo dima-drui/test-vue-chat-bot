@@ -5,14 +5,15 @@
         <v-sheet
             rounded
             elevation="2"
-            class="pa-2 d-flex flex-column"
+            color="deep-purple-accent-1"
+            class="pa-2 d-flex flex-column "
             height="600px"
             max-width="500px"
             position="fixed"
             >
 
             <v-sheet class="mb-auto">
-                <DialogComponent :messages="chatHistory" />
+                <DialogComponent :messages="chatHistory" :bot-settings="botSettings"/>
             </v-sheet>
             
             <v-sheet>
@@ -33,9 +34,9 @@ import { defineComponent } from 'vue';
 import DialogComponent from './Dialog.vue'
 import InputComponent from './Input.vue'
 import Stores from '@/store/modules'
-import { HelloUser } from '@/utils/initChat';
-import { Message } from '@/utils/types';
+import { BotSettings, Message } from '@/utils/types';
 import { MsgSender } from '@/utils/enums';
+import { botAnswers } from '@/store/modules/botAnswers';
 
 export default defineComponent({
     name: "ChatComponent",
@@ -53,6 +54,7 @@ export default defineComponent({
     },
     computed:{
         chatHistory(): Message[] { return this.storeChat.getChatHistory },
+        botSettings(): BotSettings { return this.storeChat.getBotSettings },
         inputText: {
             get(){ 
                 return this.storeChat.getInput
@@ -81,12 +83,12 @@ export default defineComponent({
         }
     },
     mounted(){
-        this.storeChat.pushMessage(HelloUser)
-        const newMsg = {
+        this.storeChat.pushMessage(botAnswers.welcome())
+
+        this.storeChat.pushMessage({
                 sender: this.msgSender.user,
-                text: "Дай подумать",
-            }
-        this.storeChat.pushMessage(newMsg)
+                text: "Привет",
+            })
     }
 })
 

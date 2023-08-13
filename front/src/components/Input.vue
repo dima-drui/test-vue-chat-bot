@@ -4,6 +4,7 @@
         v-model="inputText"
         hide-details
         @click:append-inner="$emit('clicked')"
+        @keyup.enter="$emit('clicked')"
     ></v-text-field>
 </template>
 
