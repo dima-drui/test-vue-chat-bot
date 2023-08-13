@@ -12,30 +12,14 @@
             >
 
             <v-sheet class="mb-auto">
-                
-                <v-list class="d-flex flex-column">
-                    <v-list-item
-                        v-for="msg in chatHistory"
-                        :key="msg.key"
-                        :prepend-icon="msg.sender == msgSender.bot ? msg.avatar : ''" 
-                        :class="msg.sender == msgSender.bot ? 'message message__bot' : 'message message__user' "
-                        rounded
-                        elevation="1"
-                        >
-                            <p><b>{{ msg.text }}</b></p>
-                            <p><i style="font-size: xx-small;">{{ msg.time }}</i></p>
-                        </v-list-item>
-                </v-list>
+                <DialogComponent :messages="chatHistory" />
             </v-sheet>
-
+            
             <v-sheet>
-                <v-text-field
-                    append-inner-icon="mdi-send"
-                    v-model="inputText"
-                    hide-details
-                    @click:append-inner="sendMsg(msgSender.user)"
-                    @click:enter="sendMsg(msgSender.user)"
-                ></v-text-field>
+                <InputComponent 
+                    v-model="inputText" 
+                    @clicked="sendMsg(msgSender.user)" 
+                    />
             </v-sheet>
 
         </v-sheet>
@@ -45,8 +29,9 @@
 </template>
 
 <script lang="ts">
-
 import { defineComponent } from 'vue';
+import DialogComponent from './Dialog.vue'
+import InputComponent from './Input.vue'
 import Stores from '@/store/modules'
 import { HelloUser } from '@/utils/initChat';
 import { Message } from '@/utils/types';
@@ -54,6 +39,10 @@ import { MsgSender } from '@/utils/enums';
 
 export default defineComponent({
     name: "ChatComponent",
+    components: {
+        DialogComponent,
+        InputComponent
+    },
     data(){
         const msgSender = MsgSender
         const storeChat = Stores.chat()
@@ -69,8 +58,7 @@ export default defineComponent({
                 return this.storeChat.getInput
             },
             set(val: string){ 
-                this.storeChat.updateStoreProp('inputUser', val) 
-
+                this.storeChat.updateStoreProp('inputUser', val)
             }
         }
     },
