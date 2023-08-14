@@ -32,6 +32,7 @@ export interface BotAnswers {
     welcome(): MessageDraft
     giveWeather(): MessageDraft
     givePizza(): MessageDraft
+    alarmWhen(): MessageDraft
     alarmIsSet(s: number): MessageDraft
     alarmRinging(): MessageDraft
 }

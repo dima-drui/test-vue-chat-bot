@@ -17,7 +17,7 @@ export const botAnswers: BotAnswers = {
                     label: "Заказать пиццу"
                 },
                 {
-                    method: () => Stores.chat().setAlarm(5000),
+                    method: () => Stores.chat().alarmWhen(),
                     label: "Будильник"
                 },
             ]
@@ -32,7 +32,13 @@ export const botAnswers: BotAnswers = {
     givePizza(): MessageDraft { 
         return {
             sender: MsgSender.bot,
-            text: "Пицца в пути!",
+            text: "Пицца в пути! Что еще могу сделать?",
+        }
+    },
+    alarmWhen(): MessageDraft { 
+        return {
+            sender: MsgSender.bot,
+            text: `На сколько поставить будильник?`,
         }
     },
     alarmIsSet(s: number): MessageDraft { 
