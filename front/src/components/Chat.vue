@@ -3,7 +3,7 @@
     <v-responsive class="fill-height">
 
         <v-sheet
-            width="500px"
+            max-width="500px"
             class="chat__container"
             >
 
@@ -33,9 +33,10 @@
 
                 <v-btn 
                     variant="text"
-                    :icon="storeChat.geisActive ? 'mdi-chevron-down' : 'mdi-chevron-up'"
+                    color="white"
+                    :prepend-icon="storeChat.geisActive ? 'mdi-chevron-down' : 'mdi-chevron-up'"
                     @click="storeChat.updateStoreProp('isActive', !storeChat.geisActive)"
-                    >
+                    > Chat
                     </v-btn>
             </v-sheet>
             
