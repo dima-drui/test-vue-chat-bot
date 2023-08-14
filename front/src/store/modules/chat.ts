@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { v4 as uuidV4 } from 'uuid'
 import { botAnswers } from '../../utils/botAnswers'
 import { MsgSender } from '@/utils/enums'
+import { scrollByID } from '@/utils'
 
 const useAppStore = defineStore('chat', {
   state: (): ChatStore => ({
@@ -41,21 +42,18 @@ const useAppStore = defineStore('chat', {
         } else {
             this.currentHistory.push(newMessage)
         }
+        scrollByID(newMessage.key)
     },
 
     typewritingEffect(newMessage: Message){
-
         this.currentHistory.push({
             sender: newMessage.sender,
             text: '',
             key: newMessage.key,
             time: newMessage.time
         })
-
         const msgToTyping = this.currentHistory.find(el => el.key == newMessage.key)
-
         let i = 0
-
         function typeWriter() {
             if (i < newMessage.text.length) {
                 if(msgToTyping){
@@ -87,7 +85,10 @@ const useAppStore = defineStore('chat', {
     orderPizza(){
         this.pushMessage(botAnswers.givePizza())
     },
-    setAlarm(s: number){
+    alarmWhen(){
+        this.pushMessage(botAnswers.alarmWhen())
+    },
+    alarmSet(s: number){
         this.pushMessage(botAnswers.alarmIsSet(s))
 
         setTimeout(()=>{

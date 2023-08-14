@@ -10,9 +10,10 @@
             :key="msg.key"
             :id="msg.key"
             rounded
+            variant="tonal"
+            elevation="2"
             :prepend-icon="msg.sender == msgSender.bot ? botSettings?.avatar : ''" 
             :class="msg.sender == msgSender.bot ? 'message message__bot' : 'message message__user' "
-            variant="tonal"
             >
                 <v-sheet ><b>{{ msg.text }}</b></v-sheet>
                 <v-sheet style="font-size: xx-small;"><i>{{ msg.time }}</i></v-sheet>
