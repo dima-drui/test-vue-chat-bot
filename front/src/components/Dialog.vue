@@ -26,7 +26,7 @@
                         size="small"
                         density="compact"
                         variant="tonal"
-                        color="purple"
+                        color="teal-darken-4"
                         class="ma-1"
                         @click="action.method()"
                         ></v-btn>

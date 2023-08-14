@@ -3,26 +3,42 @@
     <v-responsive class="fill-height">
 
         <v-sheet
-            rounded
-            elevation="4"
-            color="deep-purple-accent-1"
-            class="pa-2 d-flex flex-column "
-            height="600px"
             width="500px"
-            position="fixed"
+            class="chat__container"
             >
 
-            <v-sheet class="mb-auto">
-                <DialogComponent :messages="chatHistory" :bot-settings="botSettings"/>
-            </v-sheet>
-            
-            <v-sheet>
-                <InputComponent 
-                    v-model="inputText" 
-                    @clicked="sendMsg(msgSender.user)" 
-                    />
+            <v-sheet
+                v-if="storeChat.isActive"
+                rounded
+                class="frame__color d-flex flex-column pa-2"
+                height="600px"
+                >
+
+                <v-sheet class="mb-auto">
+                    <DialogComponent :messages="chatHistory" :bot-settings="botSettings"/>
+                </v-sheet>
+                
+                <v-sheet>
+                    <InputComponent 
+                        v-model="inputText" 
+                        @clicked="sendMsg(msgSender.user)" 
+                        />
+                </v-sheet>
             </v-sheet>
 
+            <v-sheet
+                class="frame__color"
+                rounded
+                >
+
+                <v-btn 
+                    @click="storeChat.isActive = !storeChat.isActive"
+                    variant="text"
+                    :icon="storeChat.isActive ? 'mdi-chevron-down' : 'mdi-chevron-up'"
+                    >
+                    </v-btn>
+            </v-sheet>
+            
         </v-sheet>
 
     </v-responsive>
@@ -70,16 +86,8 @@ export default defineComponent({
                 sender: sender,
                 text: this.inputText,
             }
-            const newMsgAnswer = {
-                sender: this.msgSender.bot,
-                text: 'супер',
-            }
             this.storeChat.pushMessage(newMsg)
             this.storeChat.updateStoreProp('inputUser', '') 
-            setTimeout(()=>{
-                this.storeChat.pushMessage(newMsgAnswer)
-            }, 1000
-            )
         }
     },
     mounted(){
@@ -93,4 +101,15 @@ export default defineComponent({
 })
 
 </script>
+<style>
+.chat__container {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.frame__color {
+    background-color: #78909C;
+}
+</style>
 @/utils/botAnswers
