@@ -2,9 +2,11 @@ import { BotSettings, ChatStore, Message, MessageDraft } from '@/utils/types'
 import { defineStore } from 'pinia'
 import { v4 as uuidV4 } from 'uuid'
 import { botAnswers } from '../../utils/botAnswers'
+import { MsgSender } from '@/utils/enums'
 
 const useAppStore = defineStore('chat', {
   state: (): ChatStore => ({
+    isActive: true,
     currentHistory: [] as Message[],
     botSettings: {
         name: 'Neo',
@@ -13,14 +15,14 @@ const useAppStore = defineStore('chat', {
     inputUser: ''
   }),
   getters:{
-    getChatHistory: (state: any): Message[] => state.currentHistory,
-    getBotSettings: (state: any): BotSettings => state.botSettings,
-    getInput: (state: any): string => state.inputUser,
+    getChatHistory: (state: ChatStore): Message[] => state.currentHistory,
+    getBotSettings: (state: ChatStore): BotSettings => state.botSettings,
+    getInput: (state: ChatStore): string => state.inputUser,
   },
   actions:{
-    updateStoreProp(prop: keyof ChatStore, val: any){
+    updateStoreProp<K extends keyof ChatStore>(prop: K, val: ChatStore[K]): void {
         try {
-            this[prop] = val
+            this.$state[prop] = val
         }
         catch(e: any) {
             console.error('updateStoreProp: ', e.message)
@@ -34,6 +36,18 @@ const useAppStore = defineStore('chat', {
         }
         this.currentHistory.push(newMessage)
     },
+
+    botAnswer(){
+        const newMsgAnswer = {
+            sender: MsgSender.bot,
+            text: 'супер',
+        }
+        setTimeout(()=>{
+            this.pushMessage(newMsgAnswer)
+        }, 1000
+        )
+    },
+
 
 // BOT ACTIONS
     showWeather(){
