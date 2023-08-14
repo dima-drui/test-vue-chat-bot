@@ -92,19 +92,17 @@ export default defineComponent({
         }
     },
     watch: {
-        waitUserReqv(oldVal, newVal){
-            if(newVal == false){
-                this.storeChat.respondsOnUserRequest()
-            }
+        waitUserReqv: {
+            handler(newVal) {
+                if(newVal == false){
+                    this.storeChat.respondsOnUserRequest()
+                }
+            },
+            immediate: true
         }
     },
     mounted(){
         this.storeChat.pushMessage(botAnswers.welcome())
-
-        this.storeChat.pushMessage({
-                sender: this.msgSender.user,
-                text: "Привет",
-            })
     }
 })
 

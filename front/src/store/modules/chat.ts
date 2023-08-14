@@ -48,10 +48,8 @@ const useAppStore = defineStore('chat', {
         scrollByID(newMessage.key)
     },
 
-    async typewritingEffect(newMessage: Message){
-        this.waitUserReq = true
-        console.log(this.waitUserReq);
-        
+    async typewritingEffect(newMessage: Message) {
+        this.waitUserReq = true        
         this.currentHistory.push({
             sender: newMessage.sender,
             text: '',
@@ -59,7 +57,6 @@ const useAppStore = defineStore('chat', {
             time: newMessage.time
         })
         const msgToTyping = this.currentHistory.find(el => el.key == newMessage.key);
-
         (async() => {
             if(msgToTyping){
                 for(let i = 0 ; i < newMessage.text.length; i++) {
@@ -68,34 +65,22 @@ const useAppStore = defineStore('chat', {
                 }
             }
         })()
- 
+        await new Promise(r => setTimeout(r, 80*newMessage.text.length))        
         this.waitUserReq = false
-        console.log(this.waitUserReq);
-        console.log(this.currentHistory);
     },
 
     respondsOnUserRequest(){
-        const userReq = this.currentHistory[-1]
-        const reqw = userReq.text.split(' ')
-        if(reqw[0] == 'Поставить' && reqw[1] == 'через') {
-            const sec = parseInt(reqw[3]) * 1000
-            this.alarmSet(sec)
-        } else {
-            this.pushMessage(botAnswers.unknownRequ())
+        const userReq = this.currentHistory[this.currentHistory.length-1]
+        if(userReq){
+            const reqw = userReq.text.split(' ')
+            if(reqw[0] == 'Поставить' && reqw[1] == 'через') {
+                const sec = Number(reqw[3])
+                this.alarmSet(sec)
+            } else {
+                this.pushMessage(botAnswers.welcome())
+            }
         }
     },
-
-    botAnswer(){
-        const newMsgAnswer = {
-            sender: MsgSender.bot,
-            text: 'супер',
-        }
-        setTimeout(()=>{
-            this.pushMessage(newMsgAnswer)
-        }, 1000
-        )
-    },
-
 
 // BOT ACTIONS
     showWeather(){
@@ -113,7 +98,7 @@ const useAppStore = defineStore('chat', {
 
         setTimeout(()=>{
             this.pushMessage(botAnswers.alarmRinging())
-        }, s)
+        }, s * 1000)
     },
 
   }

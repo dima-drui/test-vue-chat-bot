@@ -50,7 +50,7 @@ export const botAnswers: BotAnswers = {
     alarmIsSet(s: number): MessageDraft { 
         return {
             sender: MsgSender.bot,
-            text: `Будильник активирован через ${s}c`,
+            text: `Будильник зазвонит через ${s}c`,
         }
     },
     alarmRinging(): MessageDraft { 
