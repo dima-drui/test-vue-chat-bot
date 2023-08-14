@@ -4,11 +4,11 @@
 
         <v-sheet
             rounded
-            elevation="2"
+            elevation="4"
             color="deep-purple-accent-1"
             class="pa-2 d-flex flex-column "
             height="600px"
-            max-width="500px"
+            width="500px"
             position="fixed"
             >
 
@@ -36,7 +36,7 @@ import InputComponent from './Input.vue'
 import Stores from '@/store/modules'
 import { BotSettings, Message } from '@/utils/types';
 import { MsgSender } from '@/utils/enums';
-import { botAnswers } from '@/store/modules/botAnswers';
+import { botAnswers } from '@/utils/botAnswers';
 
 export default defineComponent({
     name: "ChatComponent",
@@ -93,17 +93,4 @@ export default defineComponent({
 })
 
 </script>
-
-<style>
-.message {
-    margin: 5px;
-}
-.message__bot {
-    align-self: self-start;
-    margin-right: 30px;
-}
-.message__user {
-    align-self: self-end;
-    margin-left: 30px;
-}
-</style>
+@/utils/botAnswers

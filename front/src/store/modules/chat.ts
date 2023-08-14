@@ -1,9 +1,7 @@
-// Utilities
-import { MsgSender } from '@/utils/enums'
 import { BotSettings, ChatStore, Message, MessageDraft } from '@/utils/types'
 import { defineStore } from 'pinia'
 import { v4 as uuidV4 } from 'uuid'
-import { botAnswers } from './botAnswers'
+import { botAnswers } from '../../utils/botAnswers'
 
 const useAppStore = defineStore('chat', {
   state: (): ChatStore => ({
@@ -37,7 +35,7 @@ const useAppStore = defineStore('chat', {
         this.currentHistory.push(newMessage)
     },
 
-// CHAT ACTIONS
+// BOT ACTIONS
     showWeather(){
         this.pushMessage(botAnswers.giveWeather())
     },
