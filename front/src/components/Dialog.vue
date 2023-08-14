@@ -14,7 +14,7 @@
             :class="msg.sender == msgSender.bot ? 'message message__bot' : 'message message__user' "
             variant="tonal"
             >
-                <v-sheet :class="msg.sender == msgSender.user ? 'message__text' : ''"><b>{{ msg.text }}</b></v-sheet>
+                <v-sheet ><b>{{ msg.text }}</b></v-sheet>
                 <v-sheet style="font-size: xx-small;"><i>{{ msg.time }}</i></v-sheet>
 
                 <v-sheet
@@ -69,19 +69,6 @@ export default defineComponent({
 .message__user {
     align-self: self-end;
     margin-left: 30px;
-}
-.message__text {
-    width: 0;
-    overflow: hidden;
-    border-right: 2px solid white;
-    font-size: 16px;
-    white-space: nowrap;
-    animation: typing 1.5s steps(40) forwards;
-}
-
-@keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
 }
 
 </style>
