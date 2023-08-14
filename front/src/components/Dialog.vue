@@ -1,10 +1,8 @@
 <template>
-    <p><i>{{ botSettings?.name + ' на связи' }}</i></p>
     <v-list 
         class="d-flex flex-column"
-        height="500px"
+        height="400px"
         >
-
         <v-list-item
             v-for="msg in messages"
             :key="msg.key"
@@ -16,8 +14,6 @@
             :class="msg.sender == msgSender.bot ? 'message message__bot' : 'message message__user' "
             >
                 <v-sheet ><b>{{ msg.text }}</b></v-sheet>
-                <v-sheet style="font-size: xx-small;"><i>{{ msg.time }}</i></v-sheet>
-
                 <v-sheet
                     v-if="msg.actions && msg.actions.length > 0"
                     >
@@ -32,7 +28,7 @@
                         @click="action.method()"
                         ></v-btn>
                 </v-sheet>
-
+                <v-sheet style="font-size: xx-small;"><i>{{ msg.time }}</i></v-sheet>
             </v-list-item>
     </v-list>
 </template>

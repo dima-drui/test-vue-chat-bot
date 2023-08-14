@@ -1,51 +1,52 @@
 <template>
-  <v-container class="fill-height">
-    <v-responsive class="fill-height">
+    <v-sheet
+        max-width="500px"
+        class="chat__container ma-2"
+        >
 
-        <v-sheet
-            max-width="500px"
-            class="chat__container ma-2"
-            >
-
-            <v-fade-transition>
-                <v-sheet
-                    v-if="storeChat.geisActive"
-                    rounded
-                    class="frame__color d-flex flex-column pa-2"
-                    height="600px"
-                    >
-
-                    <v-sheet class="mb-auto">
-                        <DialogComponent :messages="chatHistory" :bot-settings="botSettings"/>
-                    </v-sheet>
-                    
-                    <v-sheet>
-                        <InputComponent 
-                            v-model="inputText" 
-                            @clicked="sendMsg(msgSender.user)" 
-                            />
-                    </v-sheet>
-                </v-sheet>
-            </v-fade-transition>
-
+        <v-fade-transition>
             <v-sheet
-                class="frame__color d-flex justify-end"
+                v-if="storeChat.geisActive"
                 rounded
+                class="frame__color d-flex flex-column pa-2"
                 >
 
-                <v-btn 
-                    variant="text"
-                    color="white"
-                    :prepend-icon="storeChat.geisActive ? 'mdi-chevron-down' : 'mdi-chevron-up'"
-                    @click="storeChat.updateStoreProp('isActive', !storeChat.geisActive)"
-                    > Chat
-                    </v-btn>
+                <v-sheet class="mb-auto">
+                    <DialogComponent :messages="chatHistory" :bot-settings="botSettings"/>
+                </v-sheet>
+                
+                <v-sheet>
+                    <InputComponent 
+                        v-model="inputText" 
+                        @clicked="sendMsg(msgSender.user)" 
+                        />
+                </v-sheet>
             </v-sheet>
+        </v-fade-transition>
 
+        <v-sheet
+            class="frame__color d-flex justify-end align-center"
+            rounded
+            >
+            <v-btn 
+                v-if="storeChat.geisActive"
+                size="small"
+                class="me-auto"
+                color="white"
+                variant="text"
+                >
+                <p><i>{{ botSettings?.name + ' на связи' }}</i></p>
+            </v-btn>
+            <v-btn 
+                variant="text"
+                color="white"
+                :prepend-icon="storeChat.geisActive ? 'mdi-chevron-down' : 'mdi-chevron-up'"
+                @click="storeChat.updateStoreProp('isActive', !storeChat.geisActive)"
+                > Chat
+                </v-btn>
         </v-sheet>
 
-    </v-responsive>
-  </v-container>
+    </v-sheet>
 </template>
 
 <script lang="ts">
@@ -119,6 +120,10 @@ export default defineComponent({
 
 .frame__color {
     background-color: #78909C;
+}
+
+.frame__color_alarm {
+    background-color:red;
 }
 </style>
 @/utils/botAnswers
