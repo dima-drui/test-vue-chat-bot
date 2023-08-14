@@ -44,18 +44,14 @@ const useAppStore = defineStore('chat', {
     },
 
     typewritingEffect(newMessage: Message){
-
         this.currentHistory.push({
             sender: newMessage.sender,
             text: '',
             key: newMessage.key,
             time: newMessage.time
         })
-
         const msgToTyping = this.currentHistory.find(el => el.key == newMessage.key)
-
         let i = 0
-
         function typeWriter() {
             if (i < newMessage.text.length) {
                 if(msgToTyping){
