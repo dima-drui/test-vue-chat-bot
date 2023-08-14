@@ -4,30 +4,32 @@
 
         <v-sheet
             max-width="500px"
-            class="chat__container"
+            class="chat__container ma-2"
             >
 
-            <v-sheet
-                v-if="storeChat.geisActive"
-                rounded
-                class="frame__color d-flex flex-column pa-2"
-                height="600px"
-                >
+            <v-fade-transition>
+                <v-sheet
+                    v-if="storeChat.geisActive"
+                    rounded
+                    class="frame__color d-flex flex-column pa-2"
+                    height="600px"
+                    >
 
-                <v-sheet class="mb-auto">
-                    <DialogComponent :messages="chatHistory" :bot-settings="botSettings"/>
+                    <v-sheet class="mb-auto">
+                        <DialogComponent :messages="chatHistory" :bot-settings="botSettings"/>
+                    </v-sheet>
+                    
+                    <v-sheet>
+                        <InputComponent 
+                            v-model="inputText" 
+                            @clicked="sendMsg(msgSender.user)" 
+                            />
+                    </v-sheet>
                 </v-sheet>
-                
-                <v-sheet>
-                    <InputComponent 
-                        v-model="inputText" 
-                        @clicked="sendMsg(msgSender.user)" 
-                        />
-                </v-sheet>
-            </v-sheet>
+            </v-fade-transition>
 
             <v-sheet
-                class="frame__color"
+                class="frame__color d-flex justify-end"
                 rounded
                 >
 
@@ -39,7 +41,7 @@
                     > Chat
                     </v-btn>
             </v-sheet>
-            
+
         </v-sheet>
 
     </v-responsive>
@@ -111,8 +113,8 @@ export default defineComponent({
 <style>
 .chat__container {
     position: absolute;
-    bottom: 10px;
-    right: 10px;
+    bottom: 1px;
+    right: 1px;
 }
 
 .frame__color {
