@@ -3,6 +3,7 @@ import { MsgSender } from "./enums";
 
 export interface ChatStore {
     isActive: boolean
+    waitUserReq: boolean
     currentHistory: Message[]
     botSettings: BotSettings
     inputUser: string
@@ -30,6 +31,7 @@ export interface BotSettings {
 
 export interface BotAnswers {
     welcome(): MessageDraft
+    unknownRequ(): MessageDraft
     giveWeather(): MessageDraft
     givePizza(): MessageDraft
     alarmWhen(): MessageDraft

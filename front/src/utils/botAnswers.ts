@@ -23,6 +23,12 @@ export const botAnswers: BotAnswers = {
             ]
         }
     },
+    unknownRequ(): MessageDraft { 
+        return {
+            sender: MsgSender.bot,
+            text: "Не понял",
+        }
+    },
     giveWeather(): MessageDraft { 
         return {
             sender: MsgSender.bot,
@@ -38,13 +44,13 @@ export const botAnswers: BotAnswers = {
     alarmWhen(): MessageDraft { 
         return {
             sender: MsgSender.bot,
-            text: `На сколько поставить будильник?`,
+            text: `Чере сколько включить будлильник?`,
         }
     },
     alarmIsSet(s: number): MessageDraft { 
         return {
             sender: MsgSender.bot,
-            text: `Будильник активирован на ${s}ms`,
+            text: `Будильник зазвонит через ${s}c`,
         }
     },
     alarmRinging(): MessageDraft { 
