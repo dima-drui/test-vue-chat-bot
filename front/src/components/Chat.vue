@@ -1,31 +1,52 @@
 <template>
-  <v-container class="fill-height">
-    <v-responsive class="fill-height">
+    <v-sheet
+        max-width="500px"
+        class="chat__container ma-2"
+        >
+
+        <v-fade-transition>
+            <v-sheet
+                v-if="storeChat.geisActive"
+                rounded
+                class="frame__color d-flex flex-column pa-2"
+                >
+
+                <v-sheet class="mb-auto">
+                    <DialogComponent :messages="chatHistory" :bot-settings="botSettings"/>
+                </v-sheet>
+                
+                <v-sheet>
+                    <InputComponent 
+                        v-model="inputText" 
+                        @clicked="sendMsg(msgSender.user)" 
+                        />
+                </v-sheet>
+            </v-sheet>
+        </v-fade-transition>
 
         <v-sheet
+            class="frame__color d-flex justify-end align-center"
             rounded
-            elevation="2"
-            class="pa-2 d-flex flex-column"
-            height="600px"
-            max-width="500px"
-            position="fixed"
             >
-
-            <v-sheet class="mb-auto">
-                <DialogComponent :messages="chatHistory" />
-            </v-sheet>
-            
-            <v-sheet>
-                <InputComponent 
-                    v-model="inputText" 
-                    @clicked="sendMsg(msgSender.user)" 
-                    />
-            </v-sheet>
-
+            <v-btn 
+                v-if="storeChat.geisActive"
+                size="small"
+                class="me-auto"
+                color="white"
+                variant="text"
+                >
+                <p><i>{{ botSettings?.name + ' на связи' }}</i></p>
+            </v-btn>
+            <v-btn 
+                variant="text"
+                color="white"
+                :prepend-icon="storeChat.geisActive ? 'mdi-chevron-down' : 'mdi-chevron-up'"
+                @click="storeChat.updateStoreProp('isActive', !storeChat.geisActive)"
+                > Chat
+                </v-btn>
         </v-sheet>
 
-    </v-responsive>
-  </v-container>
+    </v-sheet>
 </template>
 
 <script lang="ts">
@@ -33,9 +54,9 @@ import { defineComponent } from 'vue';
 import DialogComponent from './Dialog.vue'
 import InputComponent from './Input.vue'
 import Stores from '@/store/modules'
-import { HelloUser } from '@/utils/initChat';
-import { Message } from '@/utils/types';
+import { BotSettings, Message } from '@/utils/types';
 import { MsgSender } from '@/utils/enums';
+import { botAnswers } from '@/utils/botAnswers';
 
 export default defineComponent({
     name: "ChatComponent",
@@ -53,6 +74,7 @@ export default defineComponent({
     },
     computed:{
         chatHistory(): Message[] { return this.storeChat.getChatHistory },
+        botSettings(): BotSettings { return this.storeChat.getBotSettings },
         inputText: {
             get(){ 
                 return this.storeChat.getInput
@@ -60,7 +82,8 @@ export default defineComponent({
             set(val: string){ 
                 this.storeChat.updateStoreProp('inputUser', val)
             }
-        }
+        },
+        waitUserReqv(): boolean { return this.storeChat.getwaitUserReq}
     },
     methods:{
         sendMsg(sender: MsgSender){
@@ -68,40 +91,39 @@ export default defineComponent({
                 sender: sender,
                 text: this.inputText,
             }
-            const newMsgAnswer = {
-                sender: this.msgSender.bot,
-                text: 'супер',
-            }
             this.storeChat.pushMessage(newMsg)
             this.storeChat.updateStoreProp('inputUser', '') 
-            setTimeout(()=>{
-                this.storeChat.pushMessage(newMsgAnswer)
-            }, 1000
-            )
+        }
+    },
+    watch: {
+        waitUserReqv: {
+            handler(newVal) {
+                if(newVal == false){
+                    this.storeChat.respondsOnUserRequest()
+                }
+            },
+            immediate: true
         }
     },
     mounted(){
-        this.storeChat.pushMessage(HelloUser)
-        const newMsg = {
-                sender: this.msgSender.user,
-                text: "Дай подумать",
-            }
-        this.storeChat.pushMessage(newMsg)
+        this.storeChat.pushMessage(botAnswers.welcome())
     }
 })
 
 </script>
-
 <style>
-.message {
-    margin: 5px;
+.chat__container {
+    position: absolute;
+    bottom: 1px;
+    right: 1px;
 }
-.message__bot {
-    align-self: self-start;
-    margin-right: 30px;
+
+.frame__color {
+    background-color: #78909C;
 }
-.message__user {
-    align-self: self-end;
-    margin-left: 30px;
+
+.frame__color_alarm {
+    background-color:red;
 }
 </style>
+@/utils/botAnswers
