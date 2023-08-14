@@ -28,7 +28,12 @@
                         @click="action.method()"
                         ></v-btn>
                 </v-sheet>
-                <v-sheet style="font-size: xx-small;"><i>{{ msg.time }}</i></v-sheet>
+                <v-sheet 
+                    style="font-size: xx-small;" 
+                    :class="msg.sender == msgSender.user ? 'text-right' : ''"
+                    >
+                    <i>{{ msg.time }}</i>
+                </v-sheet>
             </v-list-item>
     </v-list>
 </template>

@@ -8,7 +8,9 @@
             <v-sheet
                 v-if="storeChat.geisActive"
                 rounded
-                class="frame__color d-flex flex-column pa-2"
+                :class="getAlarmIs 
+                    ? 'd-flex flex-column pa-2 frame__color_alarm'
+                    : 'd-flex flex-column pa-2 frame__color'"
                 >
 
                 <v-sheet class="mb-auto">
@@ -25,13 +27,15 @@
         </v-fade-transition>
 
         <v-sheet
-            class="frame__color d-flex justify-end align-center"
             rounded
+            :class="getAlarmIs 
+                ? 'd-flex justify-end align-center frame__color_alarm'
+                : 'd-flex justify-end align-center frame__color'"
             >
             <v-btn 
                 v-if="storeChat.geisActive"
                 size="small"
-                class="me-auto"
+                class="me-auto text-none"
                 color="white"
                 variant="text"
                 >
@@ -83,7 +87,8 @@ export default defineComponent({
                 this.storeChat.updateStoreProp('inputUser', val)
             }
         },
-        waitUserReqv(): boolean { return this.storeChat.getwaitUserReq}
+        waitUserReqv(): boolean { return this.storeChat.getwaitUserReq},
+        getAlarmIs(): boolean { return this.storeChat.getAlarmIs}
     },
     methods:{
         sendMsg(sender: MsgSender){
@@ -123,7 +128,7 @@ export default defineComponent({
 }
 
 .frame__color_alarm {
-    background-color:red;
+    background-color:rgb(222, 80, 80);
 }
 </style>
 @/utils/botAnswers

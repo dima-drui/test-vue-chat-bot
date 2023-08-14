@@ -14,7 +14,8 @@ const useAppStore = defineStore('chat', {
         name: 'Neo',
         avatar: "mdi-robot-happy-outline",
     },
-    inputUser: ''
+    inputUser: '',
+    alarmIsActive: false
   }),
   getters:{
     getChatHistory: (state: ChatStore): Message[] => state.currentHistory,
@@ -22,11 +23,12 @@ const useAppStore = defineStore('chat', {
     getInput: (state: ChatStore): string => state.inputUser,
     geisActive: (state: ChatStore): boolean => state.isActive,
     getwaitUserReq: (state: ChatStore): boolean => state.waitUserReq,
+    getAlarmIs: (state: ChatStore): boolean => state.alarmIsActive,
   },
   actions:{
-    updateStoreProp<K extends keyof Pick<ChatStore, 'inputUser' | 'isActive' | 'waitUserReq' >>(
-        prop: K, val: ChatStore[K]
-        ): void {
+    updateStoreProp<
+            K extends keyof Pick<ChatStore, 'inputUser' | 'isActive' | 'waitUserReq' | 'alarmIsActive'>
+        >(prop: K, val: ChatStore[K]): void {
             try {
                 this.$state[prop] = val
             }
@@ -95,9 +97,13 @@ const useAppStore = defineStore('chat', {
     },
     alarmSet(s: number){
         this.pushMessage(botAnswers.alarmIsSet(s))
-
-        setTimeout(()=>{
+        setTimeout(async ()=>{
             this.pushMessage(botAnswers.alarmRinging())
+            for(let i = 0; i < 20; i++){
+                this.alarmIsActive = !this.alarmIsActive
+                await new Promise(r => setTimeout(r, 100))
+            }
+            this.alarmIsActive = false
         }, s * 1000)
     },
 

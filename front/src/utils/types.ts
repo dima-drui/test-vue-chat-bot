@@ -7,6 +7,7 @@ export interface ChatStore {
     currentHistory: Message[]
     botSettings: BotSettings
     inputUser: string
+    alarmIsActive: boolean
 }
 
 export interface Message {
