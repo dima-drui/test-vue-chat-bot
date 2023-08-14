@@ -32,9 +32,9 @@
                 >
 
                 <v-btn 
-                    @click="storeChat.updateStoreProp('isActive', !storeChat.geisActive)"
                     variant="text"
                     :icon="storeChat.geisActive ? 'mdi-chevron-down' : 'mdi-chevron-up'"
+                    @click="storeChat.updateStoreProp('isActive', !storeChat.geisActive)"
                     >
                     </v-btn>
             </v-sheet>

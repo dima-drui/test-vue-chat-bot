@@ -7,7 +7,7 @@ import { scrollByID } from '@/utils'
 
 const useAppStore = defineStore('chat', {
   state: (): ChatStore => ({
-    isActive: true,
+    isActive: false,
     waitUserReq: false,
     currentHistory: [] as Message[],
     botSettings: {
