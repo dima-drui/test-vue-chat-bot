@@ -8,13 +8,14 @@
         <v-list-item
             v-for="msg in messages"
             :key="msg.key"
+            :id="msg.key"
             rounded
             :prepend-icon="msg.sender == msgSender.bot ? botSettings?.avatar : ''" 
             :class="msg.sender == msgSender.bot ? 'message message__bot' : 'message message__user' "
             variant="tonal"
             >
-                <p><b>{{ msg.text }}</b></p>
-                <p><i style="font-size: xx-small;">{{ msg.time }}</i></p>
+                <v-sheet :class="msg.sender == msgSender.user ? 'message__text' : ''"><b>{{ msg.text }}</b></v-sheet>
+                <v-sheet style="font-size: xx-small;"><i>{{ msg.time }}</i></v-sheet>
 
                 <v-sheet
                     v-if="msg.actions && msg.actions.length > 0"
@@ -56,3 +57,31 @@ export default defineComponent({
 })
 
 </script>
+
+<style scoped>
+.message {
+    margin: 5px;
+}
+.message__bot {
+    align-self: self-start;
+    margin-right: 30px;
+}
+.message__user {
+    align-self: self-end;
+    margin-left: 30px;
+}
+.message__text {
+    width: 0;
+    overflow: hidden;
+    border-right: 2px solid white;
+    font-size: 16px;
+    white-space: nowrap;
+    animation: typing 1.5s steps(40) forwards;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+</style>
