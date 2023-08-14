@@ -8,10 +8,11 @@ import { scrollByID } from '@/utils'
 const useAppStore = defineStore('chat', {
   state: (): ChatStore => ({
     isActive: true,
+    waitUserReq: false,
     currentHistory: [] as Message[],
     botSettings: {
         name: 'Neo',
-        avatar: "mdi-robot-happy-outline"
+        avatar: "mdi-robot-happy-outline",
     },
     inputUser: ''
   }),
@@ -19,9 +20,11 @@ const useAppStore = defineStore('chat', {
     getChatHistory: (state: ChatStore): Message[] => state.currentHistory,
     getBotSettings: (state: ChatStore): BotSettings => state.botSettings,
     getInput: (state: ChatStore): string => state.inputUser,
+    geisActive: (state: ChatStore): boolean => state.isActive,
+    getwaitUserReq: (state: ChatStore): boolean => state.waitUserReq,
   },
   actions:{
-    updateStoreProp<K extends keyof Pick<ChatStore, 'inputUser' | 'isActive' >>(
+    updateStoreProp<K extends keyof Pick<ChatStore, 'inputUser' | 'isActive' | 'waitUserReq' >>(
         prop: K, val: ChatStore[K]
         ): void {
             try {
@@ -45,25 +48,41 @@ const useAppStore = defineStore('chat', {
         scrollByID(newMessage.key)
     },
 
-    typewritingEffect(newMessage: Message){
+    async typewritingEffect(newMessage: Message){
+        this.waitUserReq = true
+        console.log(this.waitUserReq);
+        
         this.currentHistory.push({
             sender: newMessage.sender,
             text: '',
             key: newMessage.key,
             time: newMessage.time
         })
-        const msgToTyping = this.currentHistory.find(el => el.key == newMessage.key)
-        let i = 0
-        function typeWriter() {
-            if (i < newMessage.text.length) {
-                if(msgToTyping){
+        const msgToTyping = this.currentHistory.find(el => el.key == newMessage.key);
+
+        (async() => {
+            if(msgToTyping){
+                for(let i = 0 ; i < newMessage.text.length; i++) {
                     msgToTyping.text += newMessage.text.charAt(i);
-                    i++;
-                    setTimeout(typeWriter, 50);
+                    await new Promise(r => setTimeout(r, 70))
                 }
             }
+        })()
+ 
+        this.waitUserReq = false
+        console.log(this.waitUserReq);
+        console.log(this.currentHistory);
+    },
+
+    respondsOnUserRequest(){
+        const userReq = this.currentHistory[-1]
+        const reqw = userReq.text.split(' ')
+        if(reqw[0] == 'Поставить' && reqw[1] == 'через') {
+            const sec = parseInt(reqw[3]) * 1000
+            this.alarmSet(sec)
+        } else {
+            this.pushMessage(botAnswers.unknownRequ())
         }
-        typeWriter()
     },
 
     botAnswer(){
@@ -86,6 +105,7 @@ const useAppStore = defineStore('chat', {
         this.pushMessage(botAnswers.givePizza())
     },
     alarmWhen(){
+        this.inputUser = 'Поставить через (с): 5'
         this.pushMessage(botAnswers.alarmWhen())
     },
     alarmSet(s: number){

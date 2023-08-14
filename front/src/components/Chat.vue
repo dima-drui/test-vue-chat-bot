@@ -8,7 +8,7 @@
             >
 
             <v-sheet
-                v-if="storeChat.isActive"
+                v-if="storeChat.geisActive"
                 rounded
                 class="frame__color d-flex flex-column pa-2"
                 height="600px"
@@ -32,9 +32,9 @@
                 >
 
                 <v-btn 
-                    @click="storeChat.isActive = !storeChat.isActive"
+                    @click="storeChat.updateStoreProp('isActive', !storeChat.geisActive)"
                     variant="text"
-                    :icon="storeChat.isActive ? 'mdi-chevron-down' : 'mdi-chevron-up'"
+                    :icon="storeChat.geisActive ? 'mdi-chevron-down' : 'mdi-chevron-up'"
                     >
                     </v-btn>
             </v-sheet>
@@ -78,7 +78,8 @@ export default defineComponent({
             set(val: string){ 
                 this.storeChat.updateStoreProp('inputUser', val)
             }
-        }
+        },
+        waitUserReqv(): boolean { return this.storeChat.getwaitUserReq}
     },
     methods:{
         sendMsg(sender: MsgSender){
@@ -88,6 +89,13 @@ export default defineComponent({
             }
             this.storeChat.pushMessage(newMsg)
             this.storeChat.updateStoreProp('inputUser', '') 
+        }
+    },
+    watch: {
+        waitUserReqv(oldVal, newVal){
+            if(newVal == false){
+                this.storeChat.respondsOnUserRequest()
+            }
         }
     },
     mounted(){
