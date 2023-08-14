@@ -20,13 +20,15 @@ const useAppStore = defineStore('chat', {
     getInput: (state: ChatStore): string => state.inputUser,
   },
   actions:{
-    updateStoreProp<K extends keyof ChatStore>(prop: K, val: ChatStore[K]): void {
-        try {
-            this.$state[prop] = val
-        }
-        catch(e: any) {
-            console.error('updateStoreProp: ', e.message)
-        }
+    updateStoreProp<K extends keyof Pick<ChatStore, 'inputUser' | 'isActive' >>(
+        prop: K, val: ChatStore[K]
+        ): void {
+            try {
+                this.$state[prop] = val
+            }
+            catch(e: any) {
+                console.error('updateStoreProp: ', e.message)
+            }
     },
     pushMessage(val: MessageDraft){
         const newMessage: Message = {
@@ -34,7 +36,36 @@ const useAppStore = defineStore('chat', {
             time: new Date(Date.now()).toUTCString(),
             key: uuidV4(),
         }
-        this.currentHistory.push(newMessage)
+        if(newMessage.sender == MsgSender.user){
+            this.typewritingEffect(newMessage)
+        } else {
+            this.currentHistory.push(newMessage)
+        }
+    },
+
+    typewritingEffect(newMessage: Message){
+
+        this.currentHistory.push({
+            sender: newMessage.sender,
+            text: '',
+            key: newMessage.key,
+            time: newMessage.time
+        })
+
+        const msgToTyping = this.currentHistory.find(el => el.key == newMessage.key)
+
+        let i = 0
+
+        function typeWriter() {
+            if (i < newMessage.text.length) {
+                if(msgToTyping){
+                    msgToTyping.text += newMessage.text.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 50);
+                }
+            }
+        }
+        typeWriter()
     },
 
     botAnswer(){
