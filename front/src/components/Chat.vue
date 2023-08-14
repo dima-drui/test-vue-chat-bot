@@ -1,17 +1,14 @@
 <template>
-  <v-container class="fill-height">
-    <v-responsive class="fill-height">
+    <v-sheet
+        max-width="500px"
+        class="chat__container ma-2"
+        >
 
-        <v-sheet
-            width="500px"
-            class="chat__container"
-            >
-
+        <v-fade-transition>
             <v-sheet
                 v-if="storeChat.geisActive"
                 rounded
                 class="frame__color d-flex flex-column pa-2"
-                height="600px"
                 >
 
                 <v-sheet class="mb-auto">
@@ -25,24 +22,31 @@
                         />
                 </v-sheet>
             </v-sheet>
+        </v-fade-transition>
 
-            <v-sheet
-                class="frame__color"
-                rounded
+        <v-sheet
+            class="frame__color d-flex justify-end align-center"
+            rounded
+            >
+            <v-btn 
+                v-if="storeChat.geisActive"
+                size="small"
+                class="me-auto"
+                color="white"
+                variant="text"
                 >
-
-                <v-btn 
-                    @click="storeChat.updateStoreProp('isActive', !storeChat.geisActive)"
-                    variant="text"
-                    :icon="storeChat.geisActive ? 'mdi-chevron-down' : 'mdi-chevron-up'"
-                    >
-                    </v-btn>
-            </v-sheet>
-            
+                <p><i>{{ botSettings?.name + ' на связи' }}</i></p>
+            </v-btn>
+            <v-btn 
+                variant="text"
+                color="white"
+                :prepend-icon="storeChat.geisActive ? 'mdi-chevron-down' : 'mdi-chevron-up'"
+                @click="storeChat.updateStoreProp('isActive', !storeChat.geisActive)"
+                > Chat
+                </v-btn>
         </v-sheet>
 
-    </v-responsive>
-  </v-container>
+    </v-sheet>
 </template>
 
 <script lang="ts">
@@ -110,12 +114,16 @@ export default defineComponent({
 <style>
 .chat__container {
     position: absolute;
-    bottom: 10px;
-    right: 10px;
+    bottom: 1px;
+    right: 1px;
 }
 
 .frame__color {
     background-color: #78909C;
+}
+
+.frame__color_alarm {
+    background-color:red;
 }
 </style>
 @/utils/botAnswers
