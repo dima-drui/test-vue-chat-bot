@@ -119,8 +119,8 @@ export default defineComponent({
 <style>
 .chat__container {
     position: absolute;
-    bottom: 1px;
-    right: 1px;
+    bottom: 20px;
+    right: 20px;
 }
 
 .frame__color {

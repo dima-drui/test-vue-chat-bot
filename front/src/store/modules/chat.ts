@@ -1,7 +1,7 @@
 import { BotSettings, ChatStore, Message, MessageDraft } from '@/utils/types'
 import { defineStore } from 'pinia'
 import { v4 as uuidV4 } from 'uuid'
-import { botAnswers } from '../../utils/botAnswers'
+import { botAnswers } from '@/utils/botAnswers'
 import { MsgSender } from '@/utils/enums'
 import { scrollByID } from '@/utils'
 
@@ -9,13 +9,13 @@ const useAppStore = defineStore('chat', {
   state: (): ChatStore => ({
     isActive: false,
     waitUserReq: false,
+    alarmIsActive: false,
     currentHistory: [] as Message[],
     botSettings: {
         name: 'Neo',
         avatar: "mdi-robot-happy-outline",
     },
     inputUser: '',
-    alarmIsActive: false
   }),
   getters:{
     getChatHistory: (state: ChatStore): Message[] => state.currentHistory,
@@ -59,7 +59,7 @@ const useAppStore = defineStore('chat', {
             time: newMessage.time
         })
         const msgToTyping = this.currentHistory.find(el => el.key == newMessage.key);
-        (async() => {
+        await (async(): Promise<void> => {
             if(msgToTyping){
                 for(let i = 0 ; i < newMessage.text.length; i++) {
                     msgToTyping.text += newMessage.text.charAt(i);
@@ -67,7 +67,6 @@ const useAppStore = defineStore('chat', {
                 }
             }
         })()
-        await new Promise(r => setTimeout(r, 80*newMessage.text.length))        
         this.waitUserReq = false
     },
 
