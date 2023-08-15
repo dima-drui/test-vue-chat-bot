@@ -1,7 +1,6 @@
 <template>
     <v-list 
-        class="d-flex flex-column"
-        height="400px"
+        class="d-flex flex-column list-height"
         >
         <v-list-item
             v-for="msg in messages"
@@ -50,6 +49,8 @@ export default defineComponent({
         const msgSender = MsgSender
         return {
             msgSender,
+            viewportHeiht: 0,
+            dialogHeight: 300
         }
     },
     props: {
@@ -61,6 +62,10 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
+.list-height {
+    height: 400px;
+}
 .message {
     margin: 5px;
 }
@@ -71,6 +76,12 @@ export default defineComponent({
 .message__user {
     align-self: self-end;
     margin-left: 30px;
+}
+
+@media (max-height: 450px) {
+    .list-height {
+        height: 200px;
+    }
 }
 
 </style>

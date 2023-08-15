@@ -13,7 +13,7 @@
                     : 'd-flex flex-column pa-2 frame__color'"
                 >
 
-                <v-sheet class="mb-auto">
+                <v-sheet>
                     <DialogComponent :messages="chatHistory" :bot-settings="botSettings"/>
                 </v-sheet>
                 
@@ -118,9 +118,9 @@ export default defineComponent({
 </script>
 <style>
 .chat__container {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
+    position: fixed;
+    bottom: 3px;
+    right: 3px;
 }
 
 .frame__color {
